@@ -1,0 +1,58 @@
+package com.example.ui.theme
+
+import android.app.Activity
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
+
+private val VStreamDarkColorScheme = darkColorScheme(
+    primary = StreamPrimary,
+    onPrimary = TextWhite,
+    primaryContainer = StreamPrimaryContainer,
+    onPrimaryContainer = TextWhite,
+    secondary = StreamSecondary,
+    onSecondary = CinemaBlack,
+    secondaryContainer = StreamSecondaryContainer,
+    onSecondaryContainer = TextWhite,
+    tertiary = StreamAccent,
+    background = CinemaBlack,
+    onBackground = TextWhite,
+    surface = CinemaSurface,
+    onSurface = TextWhite,
+    surfaceVariant = CinemaSurfaceVariant,
+    onSurfaceVariant = TextMuted,
+    error = StreamError,
+    onError = TextWhite
+)
+
+@Composable
+fun MyApplicationTheme(
+    darkTheme: Boolean = true, // Default to true for cinematic video streaming experience
+    content: @Composable () -> Unit
+) {
+    val colorScheme = VStreamDarkColorScheme
+
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as? Activity)?.window
+            if (window != null) {
+                window.statusBarColor = CinemaBlack.toArgb()
+                window.navigationBarColor = CinemaBlack.toArgb()
+                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+                WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = false
+            }
+        }
+    }
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = Typography,
+        content = content
+    )
+}
